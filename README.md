@@ -21,21 +21,23 @@ Spectroscopic taxonomy provides direct insights into the mineralogical compositi
 
 ## Pipeline Architecture & Methods
 
-[ Observational Spectrum (FITS) ]
-│
-▼
-[ Astropy FITS Parser ] ──────> Extract Wavelength (λ) & Reflectance (R)
-│
-▼
-[ Continuum Spline / Resampling ] ──> Match Grid with Bus-DeMeo Standard Templates
-│
-▼
-[ Spectral Metric Evaluation ] ────> Compute Least-Squares Residuals / MSE
-│
-▼
-┌──────────────────────────────┴──────────────────────────────┐
-▼                                                             ▼
+```
+  [ Observational Spectrum (FITS) ]
+                 │
+                 ▼
+     [ Astropy FITS Parser ] ──────> Extract Wavelength (λ) & Reflectance (R)
+                 │
+                 ▼
+ [ Continuum Spline / Resampling ] ──> Match Grid with Bus-DeMeo Standard Templates
+                 │
+                 ▼
+ [ Spectral Metric Evaluation ] ────> Compute Least-Squares Residuals / MSE
+                 │
+                 ▼
+  ┌──────────────────────────────┴──────────────────────────────┐
+  ▼                                                             ▼
 [ Interactive Visualization (Tk/Matplotlib) ]     [ Comprehensive PDF Synthesis (ReportLab) ]
+```
 
 ### 1. Data Ingestion & Wavelength Alignment
 Spectroscopic tables are read from standard FITS formats using `astropy.io.fits`. Observational channels are aligned and resampled to the standard Bus-DeMeo template grid using spline interpolation to ensure scale invariance at 0.55 $\mu\text{m}$.
@@ -60,7 +62,7 @@ The software includes a standalone graphical environment (`gui.py`) constructed 
 
 ## Repository Structure
 
-bash
+```bash
 Asteroid-Spectral-Classifier/
 ├── data/
 │   ├── demeo/                   # 24 Bus-DeMeo reference spectral templates (FITS)
@@ -76,40 +78,55 @@ Asteroid-Spectral-Classifier/
 ├── gui.spec                     # PyInstaller distribution configuration
 ├── requirements.txt             # Scientific software dependencies
 └── README.md                    # Project documentation
+```
 
-Installation & Execution
-Prerequisites
+---
+
+## Installation & Execution
+
+### Prerequisites
 Clone the repository and install dependencies:
 
-git clone [https://github.com/kevinantonioperezdiaz/Asteroid-Spectral-Classifier.git](https://github.com/kevinantonioperezdiaz/Asteroid-Spectral-Classifier.git)
+```bash
+git clone https://github.com/kevinantonioperezdiaz/Asteroid-Spectral-Classifier.git
 cd Asteroid-Spectral-Classifier
 pip install -r requirements.txt
+```
 
-Run Graphical Interface
-Launch the interactive classification environment: python gui.py
+### Run Graphical Interface
+Launch the interactive classification environment:
 
-Build Standalone Executable
+```bash
+python gui.py
+```
+
+### Build Standalone Executable
 Compile a platform-independent binary:
 
+```bash
 python -m PyInstaller --onefile --windowed --add-data "data;data" --hidden-import=tkinter --hidden-import=matplotlib.backends.backend_tkagg gui.py
+```
 
-Roadmap & Planned Deep Learning Extensions (v2)
+---
+
+## Roadmap & Planned Deep Learning Extensions (v2)
+
 To scale beyond deterministic template matching toward large-scale survey pipelines (e.g., Vera C. Rubin Observatory / LSST, Gaia DR3), the next release cycle incorporates:
+- **Deep Neural Classifiers:** 1D Convolutional Neural Networks (1D-CNN) and Residual Multi-Layer Perceptrons (MLP) trained on synthetic and noisy real spectra to capture subtle continuum inflections and mineralogical absorption profiles.
+- **Uncertainty Quantification:** Bayesian neural layers / Monte Carlo Dropout to produce calibrated class probability vectors rather than rigid point assignments.
+- **Photometric-to-Spectroscopic Inversion:** Neural mapping from multi-band photometric colors directly into Bus-DeMeo latent representations.
 
-Deep Neural Classifiers: 1D Convolutional Neural Networks (1D-CNN) and Residual Multi-Layer Perceptrons (MLP) trained on synthetic and noisy real spectra to capture subtle continuum inflections and mineralogical absorption profiles.
+---
 
-Uncertainty Quantification: Bayesian neural layers / Monte Carlo Dropout to produce calibrated class probability vectors rather than rigid point assignments.
+## Author & Academic Context
 
-Photometric-to-Spectroscopic Inversion: Neural mapping from multi-band photometric colors directly into Bus-DeMeo latent representations.
+**Kevin Antonio Pérez Díaz**  
+*Electronic Engineer | Master's Student in Astronomy & Astrophysics*  
+Repository: [github.com/kevinantonioperezdiaz](https://github.com/kevinantonioperezdiaz)
 
-Author & Academic Context
-Kevin Antonio Pérez Díaz
+---
 
-Electronic Engineer | Master's Student in Astronomy & Astrophysics
+## References
 
-Repository: github.com/kevinantonioperezdiaz
-
-References
-DeMeo, F. E., Binzel, R. P., Slivan, S. M., & Bus, S. J. (2009). An extension of the Bus asteroid taxonomy into the near-infrared. Icarus, 202(1), 160-180.
-
-Bus, S. J., & Binzel, R. P. (2002). Phase II of the Small Main-Belt Asteroid Spectroscopic Survey: A feature-based taxonomy. Icarus, 158(1), 146-177.
+1. DeMeo, F. E., Binzel, R. P., Slivan, S. M., & Bus, S. J. (2009). *An extension of the Bus asteroid taxonomy into the near-infrared*. Icarus, 202(1), 160-180.
+2. Bus, S. J., & Binzel, R. P. (2002). *Phase II of the Small Main-Belt Asteroid Spectroscopic Survey: A feature-based taxonomy*. Icarus, 158(1), 146-177.
